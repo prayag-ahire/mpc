@@ -1,5 +1,5 @@
 
-import { LoginButton } from "./LoginButton"
+import { Button } from "./button"
 import { Search } from "./search"
 import { UserIcon } from "./userIcon"
 
@@ -8,7 +8,7 @@ export const AppBar = ()=>{
         <div className="font-bold font-serif text-6xl pl-2 pt-2">BuyNow</div>
         <div className="flex space-x-5 items-center">
             <div><Search/></div>
-            <div><LoginButton>login</LoginButton></div>
+            <div><Button>login</Button></div>
             <div><UserIcon/></div>
         </div>
     </div>)
