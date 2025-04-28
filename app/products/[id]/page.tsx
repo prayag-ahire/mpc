@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/button";
 import { Skeleton } from "@/components/skeleton";
-import type { Product } from "@/types/producttype";
+import  type { Product } from "@/types/producttype";
 import axios from "axios";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
