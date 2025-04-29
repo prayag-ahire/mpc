@@ -78,7 +78,7 @@ export default function Home() {
       <Skeleton/>
     </div>)
   }
-  return (<div className="w-screen">
+  return (<div className="w-full">
     <div><AppBar/></div>
     <div className="flex p-2">
     <div><Button onclick={()=> setOpen(!open)}>Filter</Button></div>
