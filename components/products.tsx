@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Product } from "../types/producttype"
+import { Product } from "../types/productType"
 
 export const Products = ({value,onclick}:{value:Product,onclick?:any})=>{
     return <div key={value.id} className="w-10/12">
