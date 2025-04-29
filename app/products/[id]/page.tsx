@@ -18,6 +18,8 @@ const [loading,setLoading] = useState(true);
 
 
 const fetchData = async()=>{
+    const x = 0;
+
     try{
         const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
         setValue(res.data);

@@ -85,10 +85,10 @@ export default function Home() {
       </div>}
     </div>
     <div className="grid  justify-center">
-    {currentProducts.map((x) => (
-  <div key={x.id}>
-    <Link href={`products/${x.id}`}>
-      <Products value={x} />
+    {currentProducts.map((value) => (
+  <div key={value.id}>
+    <Link href={`products/${value.id}`}>
+      <Products value={value} />
     </Link>
   </div>
 ))}</div>
