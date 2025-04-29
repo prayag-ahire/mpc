@@ -1,5 +1,6 @@
 "use client"
 import { AppBar } from "@/components/appbar";
+import { Products } from "@/components/products";
 import { Product } from "@/types/productType";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import { Skeleton } from "@/components/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/button";
 import { useSearch } from "@/hooks/useSearch";
-import Image from "next/image"
+
 
 
 export default function Home() {
@@ -32,16 +33,20 @@ export default function Home() {
   const totalPages = Math.ceil(displayedProducts.length / productsPerPage);
   const paginate = (pageNumber:number) => setCurrentPage(pageNumber);
 
+  function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message
+    return String(error)
+  }
 
   const fetchData = async()=>{
     try{
       const res = await axios.get("https://fakestoreapi.com/products");
       console.log(res.data);
       setProduct(res.data);
-    }catch(error:any){
+    }catch(error){
       return (
         <div className="text-red-600 font-bold">
-          Error fetching products: {error.message}
+          Error fetching products: {getErrorMessage(error)}
         </div>
       );
     }finally{
@@ -84,21 +89,10 @@ export default function Home() {
       </div>}
     </div>
     <div className="grid  justify-center">
-    {currentProducts.map((value) => (
-  <div key={value.id}>
-    <Link href={`products/${value.id}`}>
-      <div key={value.id} className="w-10/12">
-          <div className="grid grid-cols-3 border-2 max-w-full py-5" >
-              <div className="col-span-1" ><Image width={300} height={100} alt={`${value?.title.toString()}`} src={`${value?.image}`}></Image></div>
-              <div className="col-span-2 ">
-                  <div className="text-2xl font-bold pb-10">{value.title}</div>
-                  <div className="flex space-x-4">
-                      <div><p className="text-2xl font-bold ">${value.price}</p></div>
-                      <div className=" flex">{`Catagory : ${value.category}`}</div>
-                  </div>
-              </div>
-          </div>
-        </div>
+    {currentProducts.map((x) => (
+  <div key={x.id}>
+    <Link href={`products/${x.id}`}>
+      <Products value={x} />
     </Link>
   </div>
 ))}</div>
