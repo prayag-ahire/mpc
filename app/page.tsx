@@ -17,15 +17,34 @@ export default function Home() {
   const [loading,setLoading] = useState(true);
   const [open,setOpen] = useState(false);
   const {value} = useSearch();
+  const [currentPage , setCurrentPage] = useState(1);
+  const productsPerPage = 5;
   
+  const displayedProducts = value
+  ? product.filter((x) =>
+      x.title.toLowerCase().includes(value.toLowerCase())
+    )
+  : product;
+
+  const indexOfLast = currentPage * productsPerPage;
+  const indexOfFirst = indexOfLast - productsPerPage;
+  const currentProducts = displayedProducts.slice(indexOfFirst, indexOfLast);
+
+  const totalPages = Math.ceil(displayedProducts.length / productsPerPage);
+  const paginate = (pageNumber:number) => setCurrentPage(pageNumber);
+
 
   const fetchData = async()=>{
     try{
       const res = await axios.get("https://fakestoreapi.com/products");
       console.log(res.data);
       setProduct(res.data);
-    }catch(error){
-      console.error("error :",error);
+    }catch(error:any){
+      return (
+        <div className="text-red-600 font-bold">
+          Error fetching products: {error.message}
+        </div>
+      );
     }finally{
       setLoading(false);
     }
@@ -33,18 +52,19 @@ export default function Home() {
   }
 
   const pricehandler = (order:"asc" | "desc")=>{
-    setOpen(!open)
-    const sorte =[...product].sort((a,b)=>{
-      return order === "asc" ? a.price - b.price : b.price - a.price
-    })
-
-    setProduct(sorte);
+       setOpen(!open)
+       const sorte =[...product].sort((a,b)=>{
+         return order === "asc" ? a.price - b.price : b.price - a.price
+       })
+       setProduct(sorte);
   }
 
   useEffect(()=>{
     fetchData();
   },[])
-  const ans = product.filter((x)=>{return x.title.toLowerCase().includes(value.toLowerCase())});
+
+
+
   if(loading){
     return(<div className="flex flex-col h-screen text-4xl ">
       <Skeleton/>
@@ -53,30 +73,35 @@ export default function Home() {
       <Skeleton/>
     </div>)
   }
-  return (<div className="w-fit">
+  return (<div className="w-screen">
     <div><AppBar/></div>
     <div className="flex p-2">
     <div><Button onclick={()=> setOpen(!open)}>Filter</Button></div>
-    {value}
+    {/* {value} */}
     {open && 
       <div className="absolute ml-22  grid bg-white text-black font-bold">
         <div className="border p-2" onClick={()=>{pricehandler("asc")}}><button>low price</button></div>
         <div className="border p-2" onClick={()=>{pricehandler("desc")}}><button>high price</button></div>
       </div>}
     </div>
-    {ans.length >0 ? ans.map((x)=>(
-      <div key={x.id}>
-      <Link href={`products/${x.id}`}> 
-      <Products  value={x} />
-      </Link>
-    </div> 
-    )) : 
-    product?.map((x)=>(
-       <div key={x.id}>
-        <Link href={`products/${x.id}`}> 
-        <Products  value={x} />
-        </Link>
-      </div> 
-    ))}
+    <div className="grid  justify-center">
+    {currentProducts.map((x) => (
+  <div key={x.id}>
+    <Link href={`products/${x.id}`}>
+      <Products value={x} />
+    </Link>
+  </div>
+))}</div>
+
+  <div className="flex gap-2 mt-4 justify-center">
+  {Array.from({ length: totalPages }, (_, i) => (
+    <button
+      key={i}
+      onClick={() => paginate(i + 1)}
+      className={`px-4 py-2 border rounded ${ currentPage === i + 1 ? "bg-blue-500 text-white" : ""}`}>
+      {i + 1}
+    </button>
+  ))}
+</div>
   </div>);
 }

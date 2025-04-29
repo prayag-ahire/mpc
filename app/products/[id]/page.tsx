@@ -50,7 +50,7 @@ return(<div>
                 <div className="w-full pb-10">{value?.description}</div>
                 <div className=""><p>{value?.rating.rate} ratings</p></div>
                 <div><p className="text-2xl font-bold ">${value?.price}</p></div>
-                <div><p>Stock remaning {value?.rating.count}</p></div>
+                <div><p>remaning Stock {value?.rating.count}</p></div>
             </div>
         </div>
     </div>)
