@@ -38,22 +38,7 @@ export default function Home() {
     return String(error)
   }
 
-  const fetchData = async()=>{
-    try{
-      const res = await axios.get("https://fakestoreapi.com/products");
-      console.log(res.data);
-      setProduct(res.data);
-    }catch(error){
-      return (
-        <div className="text-red-600 font-bold">
-          Error fetching products: {getErrorMessage(error)}
-        </div>
-      );
-    }finally{
-      setLoading(false);
-    }
-    
-  }
+
 
   const pricehandler = (order:"asc" | "desc")=>{
        setOpen(!open)
@@ -64,6 +49,22 @@ export default function Home() {
   }
 
   useEffect(()=>{
+    const fetchData = async()=>{
+      try{
+        const res = await axios.get("https://fakestoreapi.com/products");
+        console.log(res.data);
+        setProduct(res.data);
+      }catch(error){
+        return (
+          <div className="text-red-600 font-bold">
+            Error fetching products: {getErrorMessage(error )}
+          </div>
+        );
+      }finally{
+        setLoading(false);
+      }
+      
+    }
     fetchData();
   },[])
 

@@ -1,8 +1,8 @@
 import Image from "next/image"
 import { Product } from "../types/productType"
+import { MouseEventHandler } from "react"
 
-export const Products = ({value,onclick}:{value:Product,onclick?:any})=>{
-    const x = 0;
+export const Products = ({value,onclick}:{value:Product,onclick?:MouseEventHandler<HTMLDivElement>})=>{
 
     return <div key={value.id} className="w-10/12">
     <div className="grid grid-cols-3 border-2 max-w-full py-5" onClick={onclick}>

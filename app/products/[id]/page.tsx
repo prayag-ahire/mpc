@@ -16,19 +16,28 @@ const { id } = params;
 const [value,setValue] = useState<Product | null>(null);
 const [loading,setLoading] = useState(true);
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message
+    return String(error)
+  }
 
-const fetchData = async()=>{
-    
-    try{
-        const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
-        setValue(res.data);
-    }catch(error){
-        
-      }finally{
-        setLoading(false);
-      } 
-}
+
 useEffect(()=>{
+    const fetchData = async()=>{
+    
+        try{
+            const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
+            setValue(res.data);
+        }catch(error){
+            return (
+                <div className="text-red-600 font-bold">
+                  Error fetching products: {getErrorMessage(error )}
+                </div>
+              );    
+        }finally{
+            setLoading(false);
+        } 
+    }
     if(id)
     fetchData();
 },[id])
